@@ -1,0 +1,648 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Verizon Accuweather">
+    <meta name="author" content="Trevor Sammis">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>World Weather</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="styles/dashboard.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="css/weather-icons.min.css">
+
+    <style>
+      body{
+        /* changes with the current time of day at the specified location */
+        /* default is daytime */
+        background-color: #ABCDEF;
+      }
+
+      i{
+        font-size: 128px;
+        margin-bottom: 20px;
+        color: white;
+        text-shadow: 3px 3px 3px gray;
+      }
+
+      th, td{
+        text-align: center;
+      }
+
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">World Weather</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        </div>
+      </div>
+    </nav>
+
+    <!-- Cities -->
+    <!-- Clicking these will change API address to grab data for a new city -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar" id="cities">
+          <!-- class="active" highlights current city -->
+            <li class="active"><a href="#" id="Shanghai">Shanghai</a></li>
+            <li><a href="#" id="Karachi">Karachi</a></li>
+            <li><a href="#" id="Beijing">Beijing</a></li>
+            <li><a href="#" id="Delhi">Delhi</a></li>
+            <li><a href="#" id="Lagos">Lagos</a></li>
+            <li><a href="#" id="Tianjin">Tianjin</a></li>
+            <li><a href="#" id="Istanbul">Istanbul</a></li>
+            <li><a href="#" id="Tokyo">Tokyo</a></li>
+            <li><a href="#" id="Guangzhou">Guangzhou</a></li>
+            <li><a href="#" id="Mumbai">Mumbai</a></li>
+            <li><a href="#" id="Moscow">Moscow</a></li>
+            <li><a href="#" id="Sao_Paulo">Sao Paulo</a></li>
+            <li><a href="#" id="Shenzhen">Shenzhen</a></li>
+            <li><a href="#" id="Jakarta">Jakarta</a></li>
+            <li><a href="#" id="Seoul">Seoul</a></li>
+            <li><a href="#" id="Kinshasa">Kinshasa</a></li>
+            <li><a href="#" id="Cairo">Cairo</a></li>
+            <li><a href="#" id="Lahore">Lahore</a></li>
+            <li><a href="#" id="Mexico_City">Mexico City</a></li>
+            <li><a href="#" id="Lima">Lima</a></li>
+            <li><a href="#" id="New_York_City">New York City</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header" id="header_city">City Name</h1>
+
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-3 placeholder" id="now">
+              <!-- changing city adds class for appropriate font awesome icon, ex.: -->
+              <!-- <i class="wi wi-day-sunny"></i> -->
+              <i class="wi"></i>
+              <h4>Now</h4>
+              <span class="text-muted">Now Icon</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder" id="later">
+              <i class="wi"></i>
+              <h4>+ 4 hours</h4>
+              <span class="text-muted">+ 4 Hours Icon</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder" id="much_later">
+              <i class="wi"></i>
+              <h4>+ 8 Hours</h4>
+              <span class="text-muted">+ 8 Hours Icon</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder" id="next_period">
+              <i class="wi"></i>
+              <h4>+ 12 Hours</h4>
+              <span class="text-muted">+ 12 Hours Icon</span>
+            </div>
+          </div>
+
+          <h2 class="sub-header">Forecast</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Hourly Forecast</th>
+                  <th>Summary</th>
+                  <th>Temp</th>
+                  <th>Feels Like</th>
+                  <th>Precip %</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="plus1">
+                  <td>+1 hour</td>
+                  <td class="icon">Lorem</td>
+                  <td class="temp">ipsum</td>
+                  <td class="feels">dolor</td>
+                  <td class="precip">sit</td>
+                </tr>
+                <tr id="plus2">
+                  <td >+ 2 hours</td>
+                  <td class="icon">amet</td>
+                  <td class="temp">consectetur</td>
+                  <td class="feels">adipiscing</td>
+                  <td class="precip">elit</td>
+                </tr>
+                <tr id="plus3">
+                  <td>+ 3 hours</td>
+                  <td class="icon">Integer</td>
+                  <td class="temp">nec</td>
+                  <td class="feels">odio</td>
+                  <td class="precip">Praesent</td>
+                </tr>
+                <tr id="plus4">
+                  <td>+4 hours</td>
+                  <td class="icon">Lorem</td>
+                  <td class="temp">ipsum</td>
+                  <td class="feels">dolor</td>
+                  <td class="precip">sit</td>
+                </tr>
+                <tr id="plus5">
+                  <td >+ 5 hours</td>
+                  <td class="icon">amet</td>
+                  <td class="temp">consectetur</td>
+                  <td class="feels">adipiscing</td>
+                  <td class="precip">elit</td>
+                </tr>
+                <tr id="plus6">
+                  <td>+ 6 hours</td>
+                  <td class="icon">Integer</td>
+                  <td class="temp">nec</td>
+                  <td class="feels">odio</td>
+                  <td class="precip">Praesent</td>
+                </tr>
+                <tr id="plus7">
+                  <td>+7 hours</td>
+                  <td class="icon">Lorem</td>
+                  <td class="temp">ipsum</td>
+                  <td class="feels">dolor</td>
+                  <td class="precip">sit</td>
+                </tr>
+                <tr id="plus8">
+                  <td >+ 8 hours</td>
+                  <td class="icon">amet</td>
+                  <td class="temp">consectetur</td>
+                  <td class="feels">adipiscing</td>
+                  <td class="precip">elit</td>
+                </tr>
+                <tr id="plus9">
+                  <td>+ 9 hours</td>
+                  <td class="icon">Integer</td>
+                  <td class="temp">nec</td>
+                  <td class="feels">odio</td>
+                  <td class="precip">Praesent</td>
+                </tr>
+                <tr id="plus10">
+                  <td>+10 hours</td>
+                  <td class="icon">Lorem</td>
+                  <td class="temp">ipsum</td>
+                  <td class="feels">dolor</td>
+                  <td class="precip">sit</td>
+                </tr>
+                <tr id="plus11">
+                  <td >+ 11 hours</td>
+                  <td class="icon">amet</td>
+                  <td class="temp">consectetur</td>
+                  <td class="feels">adipiscing</td>
+                  <td class="precip">elit</td>
+                </tr>
+                <tr id="plus12">
+                  <td>+ 12 hours</td>
+                  <td class="icon">Integer</td>
+                  <td class="temp">nec</td>
+                  <td class="feels">odio</td>
+                  <td class="precip">Praesent</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- local boostrap fallback -->
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script>
+
+    // map font awesome icons to accuweather api icons
+    var icons = [];
+    icons[1] = 'wi-day-sunny';
+    icons[2] = 'wi-day-sunny';
+    icons[3] = 'wi-day-sunny';
+    icons[4] = 'wi-day-sunny';
+    icons[5] = 'wi-day-haze';
+    icons[6] = 'wi-day-cloudy';
+    icons[7] = 'wi-cloud';
+    icons[8] = 'wi-day-sunny-overcast';
+    icons[9] = 'wi-day-cloudy';
+    icons[10] = 'wi-day-cloudy';
+    icons[11] = 'wi-fog';
+    icons[12] = 'wi-showers';
+    icons[13] = 'wi-day-showers';
+    icons[14] = 'wi-day-showers';
+    icons[15] = 'wi-thunderstorm';
+    icons[16] = 'wi-day-thunderstorm';
+    icons[17] = 'wi-day-thunderstorm';
+    icons[18] = 'wi-rain';
+    icons[19] = 'wi-snow';
+    icons[20] = 'wi-day-snow';
+    icons[21] = 'wi-day-snow';
+    icons[22] = 'wi-snow';
+    icons[23] = 'wi-day-snow';
+    icons[24] = 'wi-sleet';
+    icons[25] = 'wi-sleet';
+    icons[26] = 'wi-rain-mix';
+    icons[27] = 'wi-rain-mix';
+    icons[28] = 'wi-rain-mix';
+    icons[29] = 'wi-rain-mix';
+    icons[30] = 'wi-hot';
+    icons[31] = 'wi-snowflake-cold';
+    icons[32] = 'wi-windy';
+    icons[33] = 'wi-night-clear';
+    icons[34] = 'wi-night-clear';
+    icons[35] = 'wi-night-alt-cloudy';
+    icons[36] = 'wi-night-alt-cloudy';
+    icons[37] = 'wi-night-fog';
+    icons[38] = 'wi-night-alt-cloudy';
+    icons[39] = 'wi-night-alt-rain';
+    icons[40] = 'wi-night-alt-rain';
+    icons[41] = 'wi-night-thunderstorm';
+    icons[42] = 'wi-night-alt-storm-showers';
+    icons[43] = 'wi-night-alt-snow';
+    icons[44] = 'wi-night-alt-snow';
+
+    // to find city codes for additional cities: 
+
+    // http://api.accuweather.com/locations/v1/cities/US/search.json?q=new%20york&apikey=20070d34c74b42739ad76ebe61a114f7&alias=always
+
+    // OR, for non-US cities:
+
+    // use this to search for a city - city code is in URL
+    // http://www.accuweather.com/en/mx/mexico-city/242560/weather-forecast/242560
+
+    function City(shortname, name, code, jQElSelector){
+      this.shortname = shortname;
+      this.name = name;
+      this.code = code;
+      this.jQElSelector = jQElSelector;
+    }
+
+    // 21 largest world cities (proper)
+    var Shanghai = new City("Shanghai", "Shanghai", 106577, $('#Shanghai'));
+    var Karachi = new City("Karachi", "Karachi", 261158, $('#Karachi'));
+    var Beijing = new City("Beijing", "Beijing", 101924, $('#Beijing'));
+    var Delhi = new City("Delhi", "Delhi", 202396, $('#Delhi'));
+    var Lagos = new City("Lagos", "Lagos", 4607, $('#Lagos'));
+    var Tianjin = new City("Tianjin", "Tianjin", 106780, $('#Tianjin'));
+    var Istanbul = new City("Istanbul", "Istanbul", 318251, $('#Istanbul'));
+    var Tokyo = new City("Tokyo", "Tokyo", 226396, $('#Tokyo'));
+    var Guangzhou = new City("Guangzhou", "Guangzhou", 102255, $('#Guangzhou'));
+    var Mumbai = new City("Mumbai", "Mumbai", 204842, $('#Mumbai'));
+    var Moscow = new City("Moscow", "Moscow", 294021, $('#Moscow'));
+    var Sao_Paulo = new City("Sao Paulo", "Sao Paulo", 45881, $('#Sao_Paulo'));
+    var Shenzhen = new City("Shenzhen", "Shenzhen", 58194, $('#Shenzhen'));
+    var Jakarta = new City("Jakarta", "Jakarta", 208971, $('#Jakarta'));
+    var Seoul = new City("Seoul", "Seoul", 226081, $('#Seoul'));
+    var Kinshasa = new City("Kinshasa", "Kinshasa", 113487, $('#Kinshasa'));
+    var Cairo = new City("Cairo", "Cairo", 127164, $('#Cairo'));
+    var Lahore = new City("Lahore", "Lahore", 260622, $('#Lahore'));
+    var Mexico_City = new City("Mexico_City", "Mexico City", 242560, $('#Mexico_City'));
+    var Lima = new City("Lima", "Lima", 264120, $('#Lima'));
+    var New_York_City = new City("New_York_City", "New York City", 349727, $('#Lima'));
+
+    var cities = [Shanghai, Karachi, Beijing, Delhi, Lagos, Tianjin, Istanbul, Tokyo, Guangzhou, Mumbai, Moscow, Sao_Paulo, Shenzhen, Jakarta, Seoul, Kinshasa, Cairo, Lahore, Mexico_City, Lima, New_York_City];
+
+    // Start with JSON for first city in the cities array
+    var city_code = cities[0].code;
+
+// for(var k = 0; k < cities.length; k++){
+//   cities[k].jQElSelector.click(function(){
+//     alert(cities[k].code);
+//     city_code = cities[k].code;
+//     currentCity = k;
+//     runJSON();
+//     cityClick();
+//   })
+// }
+
+// !!! ### [  ] I want to run a loop that adds event handlers to everything this way.
+// REFACTOR - replace below with something like above.
+// PROBLEM - cities[k] comes back undefined on click.
+
+$('#Shanghai').click(function(){
+  city_code = Shanghai.code;
+  currentCity = 1;
+  runJSON();
+  cityClick();
+});
+
+$('#Karachi').click(function(){
+  city_code = Karachi.code;
+  currentCity = 2;
+  runJSON();
+  cityClick();
+});
+
+$('#Beijing').click(function(){
+  city_code = Beijing.code;
+  currentCity = 3;
+  runJSON();
+  cityClick();
+});
+
+$('#Delhi').click(function(){
+  city_code = Delhi.code;
+  currentCity = 4;
+  runJSON();
+  cityClick();
+});
+
+$('#Lagos').click(function(){
+  city_code = Lagos.code;
+  currentCity = 5;
+  runJSON();
+  cityClick();
+});
+
+$('#Tianjin').click(function(){
+  city_code = Tianjin.code;
+  currentCity = 6;
+  runJSON();
+  cityClick();
+});
+
+$('#Istanbul').click(function(){
+  city_code = Istanbul.code;
+  currentCity = 7;
+  runJSON();
+  cityClick();
+});
+
+$('#Tokyo').click(function(){
+  city_code = Tokyo.code;
+  currentCity = 8;
+  runJSON();
+  cityClick();
+});
+
+$('#Guangzhou').click(function(){
+  city_code = Guangzhou.code;
+  currentCity = 9;
+  runJSON();
+  cityClick();
+});
+
+$('#Mumbai').click(function(){
+  city_code = Mumbai.code;
+  currentCity = 10;
+  runJSON();
+  cityClick();
+});
+
+$('#Moscow').click(function(){
+  city_code = Moscow.code;
+  currentCity = 11;
+  runJSON();
+  cityClick();
+});
+
+$('#Sao_Paulo').click(function(){
+  city_code = Sao_Paulo.code;
+  currentCity = 12;
+  runJSON();
+  cityClick();
+});
+
+$('#Shenzhen').click(function(){
+  city_code = Shenzhen.code;
+  currentCity = 13;
+  runJSON();
+  cityClick();
+});
+
+$('#Jakarta').click(function(){
+  city_code = Jakarta.code;
+  currentCity = 14;
+  runJSON();
+  cityClick();
+});
+
+$('#Seoul').click(function(){
+  city_code = Seoul.code;
+  currentCity = 15;
+  runJSON();
+  cityClick();
+});
+
+$('#Kinshasa').click(function(){
+  city_code = Kinshasa.code;
+  currentCity = 16;
+  runJSON();
+  cityClick();
+});
+
+$('#Cairo').click(function(){
+  city_code = Cairo.code;
+  currentCity = 17;
+  runJSON();
+  cityClick();
+});
+
+$('#Lahore').click(function(){
+  city_code = Lahore.code;
+  currentCity = 18;
+  runJSON();
+  cityClick();
+});
+
+$('#Mexico_City').click(function(){
+  city_code = Mexico_City.code;
+  currentCity = 19;
+  runJSON();
+  cityClick();
+});
+
+$('#Lima').click(function(){
+  city_code = Lima.code;
+  currentCity = 20;
+  runJSON();
+  cityClick();
+});
+
+$('#New_York_City').click(function(){
+  city_code = New_York_City.code;
+  currentCity = 21;
+  runJSON();
+  cityClick();
+});
+
+var timer;
+
+// grab JSON for appropriate city and display on screen
+function runJSON(){
+  var accuweatherAPI = "http://apidev.accuweather.com/localweather/v1/"+ city_code+ "?apikey=20070d34c74b42739ad76ebe61a114f7&details=true";
+
+  $.getJSON( accuweatherAPI, {
+    format: "json"
+  })
+    .done(function( data ) {
+      // get time now in specified city.  Something like this:
+      // console.log(data.ForecastSummary.HourlyForecasts[0].DateTime);
+      $('#header_city').html(data.Location.EnglishName + ', ' + data.Location.Country.EnglishName);
+
+      // change fontawesome icons per accuweather api's 'WeatherIcon'
+      // zero out old class, add back class 'wi' and then add new class
+      $('#now i').attr('class', 'wi');
+      $('#now i').addClass(icons[data.ForecastSummary.HourlyForecasts[0].WeatherIcon]);
+      $('#later i').attr('class', 'wi');
+      $('#later i').addClass(icons[data.ForecastSummary.HourlyForecasts[4].WeatherIcon]);
+      $('#much_later i').attr('class', 'wi');
+      $('#much_later i').addClass(icons[data.ForecastSummary.HourlyForecasts[8].WeatherIcon]);
+      $('#next_period i').attr('class', 'wi');
+      $('#next_period i').addClass(icons[data.ForecastSummary.HourlyForecasts[11].WeatherIcon]);
+      
+      $('#now span').html(data.ForecastSummary.HourlyForecasts[0].IconPhrase);
+      $('#later span').html(data.ForecastSummary.HourlyForecasts[4].IconPhrase);
+      $('#much_later span').html(data.ForecastSummary.HourlyForecasts[8].IconPhrase);
+      $('#next_period span').html(data.ForecastSummary.HourlyForecasts[11].IconPhrase);
+
+
+      // change background color to indicate time of day
+      var bkgdColor = (data.CurrentConditions.IsDayTime) ? '#ABCDEF' :'#444444';
+      $('body').css("background-color", bkgdColor);
+
+      var textColor = (data.CurrentConditions.IsDayTime) ? '#444444' :'#AAAAAA';
+      $('h1, h2, h4, span, td, th').css("color", textColor);
+
+      var hrly;
+      var icon;
+      var temp;
+      var feels;
+      var precip;
+
+      for(var i = 0; i < 12; i++){
+        hrly = "#plus" + (i + 1);
+        icon = hrly + ' .icon';
+        temp = hrly + ' .temp';
+        feels = hrly + ' .feels';
+        precip = hrly + ' .precip';
+
+        $(icon).html(data.ForecastSummary.HourlyForecasts[i].IconPhrase);
+        $(temp).html(data.ForecastSummary.HourlyForecasts[i].Temperature.Value);
+        $(feels).html(data.ForecastSummary.HourlyForecasts[i].RealFeelTemperature.Value);
+        $(precip).html(data.ForecastSummary.HourlyForecasts[i].PrecipitationProbability);
+      }
+    });
+}
+
+var cityInterval = 3000;
+var clickedCityInterval = 5000;
+var currentCity = 0;
+
+runJSON();
+startTimer();
+
+function cityClick(){
+  for(var m = 0; m < cities.length; m++){
+    cities[m].jQElSelector.parent().attr('class','');
+  }
+
+  cities[currentCity - 1].jQElSelector.parent().attr('class','active');
+
+  clearInterval(timer);
+
+  var delay = setTimeout(function(){
+    startTimer();
+    cities[currentCity - 1].jQElSelector.parent().attr('class','');
+    currentCity --;
+  }, clickedCityInterval);
+}
+
+
+function startTimer(){
+  
+  // run first city
+  runJSON();
+  // cities[19] AND cities[20] BOTH give me Lima!!
+  // Fine for now.
+  console.log(currentCity + " : " + cities[currentCity].shortname);
+
+  cities[currentCity].jQElSelector.parent().attr('class','active');
+
+  timer = setInterval(function(){
+   
+    currentCity ++;
+    
+    // if city is 0 - 20, highlight current city and unhighlight last city 
+      if(currentCity < cities.length){
+      // set the previous city's class='' 
+      cities[currentCity - 1].jQElSelector.parent().attr('class','');
+      // and the current city's class='active'
+      cities[currentCity].jQElSelector.parent().attr('class','active');
+    }
+
+
+    // ### LAST ### Problem.  NYC never highlights.
+    // PROBLEM = $( ' {cities[19 AND 20].jQuerySelector.parent} ' ) BOTH come up as Lima
+
+    // if cycle goes past last city, cycle back to first city
+    else if(currentCity >= cities.length){
+      // currentCity = 0;
+      // unhighlight last city
+      cities[cities.length - 1].jQElSelector.parent().attr('class','');
+      // highlight first city
+      cities[0].jQElSelector.parent().attr('class','active');
+      currentCity = 0;
+    }
+
+    city_code = cities[currentCity].code;
+    console.log(currentCity + " : " + cities[currentCity].shortname);
+
+    runJSON();
+    
+  }, cityInterval);
+}
+
+</script>
+
+  </body>
+</html>
+
+<!-- TO DO -->
+
+<!-- 
+1. grab time in current city
+2.  refactor
+3.  move list on left @ "col-xs" 
+4.  Highlight never moves from Lima to New York.  Lima stays lit for two cycles
+-->
+
+
+<!-- [ ] ul at the left disappears when page gets narrow - this list should go to the bottom or be accessible via the hamburger at the top right -->
+
+
+<!-- [ ] grab current time at specified city to change background color -->
+<!-- Map fontawesome icons to colors of text-shadows for icons -->
+<!-- Add current time after name of city ex. Fronsac: 3:25pm -->
+<!-- horizontal CSS gradient for top: time of day now, + 4 hours, + 8 hours, + 12 hours
+vertical CSS gradient for Forecast: time of day now, + 1 hours, + 2 hours, etc. -->
+<!-- map fontawesome icons (day or night) to icon color and textshadow color -->
+<!-- could do this with an object so we can store fontawesome icon AND appropriate color for body background and text-shadow -->
+
+
+<!-- add click listeners to elements dynamically -->
+
+<!-- loop to add click listeners to city <li> -->
+<!-- replace name and shortname thing in City Object - use String function to cut out "_" -->
+
+
